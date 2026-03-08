@@ -1,12 +1,14 @@
-# PM Agent Template
+# Tools4WPS
 
-> 🤖 独立的项目管理 Agent 模板 - 让 AI Agent 像人类团队一样协作
+> 🤖 WPS 工具集 - 基于 Agent Team 的智能工具开发
 
-**版本**: 1.0.0 | **状态**: Template Ready | **更新**: 2026-03-08
+**版本**: 0.1.0 | **状态**: 初始化中 | **更新**: 2026-03-08
 
 ---
 
-## 💡 什么是 PM Agent？
+## 💡 项目简介
+
+本项目使用 **PM Agent Framework** 构建，是一个智能化的 WPS 工具集开发项目。
 
 PM Agent 是一个**独立的项目管理工具**，能够：
 
@@ -88,24 +90,17 @@ pm-agent-template/
 
 ## 🚀 快速开始
 
-### 1. 安装 OpenCode CLI
+### 1. 克隆仓库
+
+```bash
+git clone git@github.com:Sonnet0524/Tools4WPS.git
+cd Tools4WPS
+```
+
+### 2. 安装 OpenCode CLI（如未安装）
 
 ```bash
 pip install opencode
-```
-
-### 2. 配置 OpenCode
-
-编辑 OpenCode 配置，添加本项目：
-
-```bash
-# 编辑配置文件
-# Linux/Mac: ~/.config/opencode/config.yaml
-# Windows: %APPDATA%\opencode\config.yaml
-
-projects:
-  pm-agent-template:
-    path: /path/to/pm-agent-template
 ```
 
 ### 3. 首次启动 PM Agent
@@ -385,6 +380,7 @@ MIT License - 自由使用和修改
 ## 🔗 相关资源
 
 - [SG-AgentTeam](https://github.com/Sonnet0524/SG-AgentTeam) - 原始项目
+- [Agent Team Template](https://github.com/Sonnet0524/agent-team-template) - 模板仓库
 - [OpenCode](https://opencode.ai) - Agent 执行框架
 - [Agent Team 设计方法论](agents/_templates/TEMPLATE-GUIDE.md)
 

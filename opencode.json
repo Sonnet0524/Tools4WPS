@@ -18,8 +18,8 @@
     "research-team": "agents/_templates/research-team/AGENTS.md.template"
   },
   "project": {
-    "name": "PM Agent Template",
-    "version": "1.0.0",
-    "description": "独立的项目管理 Agent 模板"
+    "name": "Tools4WPS",
+    "version": "0.1.0",
+    "description": "Tools for WPS - WPS工具集项目"
   }
 }
