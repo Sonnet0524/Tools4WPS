@@ -193,6 +193,18 @@ tests/                   # 由 Test Team 负责
 | 工作流程 | `agents/pm/WORKFLOW.md` | Agent 管理流程 |
 | Agent 模板 | `agents/_templates/` | Team 创建参考 |
 | 实践经验 | `archive/sg-agentteam-experiences/` | 历史经验 |
+| **API 索引** | `knowledge-base/wps-open-platform/api-index.json` | 327个API快速查询 |
+
+### API 索引使用
+
+开发过程中查询 API 信息:
+```
+读取 api-index.json:
+- endpoint_index: 快速按端点查找
+- categories: 按类别获取 API 列表
+- apis[].permission: 查看权限要求
+- apis[].file: 获取详细文档路径
+```
 
 ---
 

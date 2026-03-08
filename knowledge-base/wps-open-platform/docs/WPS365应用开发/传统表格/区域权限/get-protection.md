@@ -1,0 +1,83 @@
+---
+title: Obtain Region Permission Settings
+breadcrumb: WPS365应用开发 > 传统表格 > 区域权限 > 获取区域权限设置
+source: raw_md/app-integration-dev/wps365/server/sheets/protection/get-protection.md
+---
+
+
+# 获取区域权限设置
+
+
+
+
+**标签**：`【电子表格】` 
+
+
+## 请求说明
+| 字段          | 值                  |
+|--------------|---------------------|
+| **<div style="white-space: nowrap;">请求地址</div>**  | https://openapi.wps.cn/v7/sheets/{file_id}/worksheets/{worksheet_id}/protection_ranges          |
+| **<div style="white-space: nowrap;">HTTP 方法</div>** | `GET`    |
+| **<div style="white-space: nowrap;">接口描述</div>**  | 无 |
+| **<div style="white-space: nowrap;">签名方式</div>**  | [KSO-1](https://open.wps.cn/documents/app-integration-dev/wps365/server/api-description/signature-description) |
+| **<div style="white-space: nowrap;">限频策略</div>** | 无 |
+| **<div style="white-space: nowrap;">权限要求</div>** | <div><div>管理传统表格(应用授权) `kso.sheets.readwrite`</div><div style="margin-top: 5px;"></div><div>查询传统表格(应用授权) `kso.sheets.read`</div><div style="margin-top: 5px;"></div><div>管理传统表格(用户授权) `kso.sheets.readwrite`</div><div style="margin-top: 5px;"></div><div>查询传统表格(用户授权) `kso.sheets.read`</div></div> |
+
+
+
+
+## 路径参数 (Path)
+| 属性名 | 类型 | 是否必填 | 描述 | 可选值 |
+|-------|------|------|-------|-------|
+| <div style="white-space: nowrap;">file_id</div> | `string` | 是 | 文件ID | - 
+| <div style="white-space: nowrap;">worksheet_id</div> | `integer` | 是 | 工作表ID | - 
+
+
+
+
+
+
+
+## 响应体(Response)
+**HTTP状态码:** `200`<br/>
+**响应体格式:** `application/json`
+<OpenapiRenderTable hideHeaderKeys='required' dataSource='[{"key":"data","name":"data","deprecated":false,"type":"object","required":"是","enum":[],"xEnum":[],"description":"-","children":[{"key":"data.protection_infos","name":"protection_infos","deprecated":false,"type":"array[object]","required":"是","enum":[],"xEnum":[],"description":"<p>区域权限信息组列表</p>\n","children":[{"key":"data.protection_infos.items.master_id","name":"master_id","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>区域保护开启者的用户ID</p>\n","children":[]},{"key":"data.protection_infos.items.other_user_permission","name":"other_user_permission","deprecated":false,"type":"string","required":"是","enum":["user_access_permission_visible","user_access_permission_editable"],"xEnum":["user_access_permission_visible","user_access_permission_editable"],"description":"<p>（剩余区域对其他人）工作表区域权限类型</p>\n","children":[]},{"key":"data.protection_infos.items.protection_info","name":"protection_info","deprecated":false,"type":"array[object]","required":"是","enum":[],"xEnum":[],"description":"<p>区域权限信息列表</p>\n","children":[{"key":"data.protection_infos.items.protection_info.items.id","name":"id","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>区域权限ID</p>\n","children":[]},{"key":"data.protection_infos.items.protection_info.items.others_access_permission","name":"others_access_permission","deprecated":false,"type":"string","required":"是","enum":["others_access_permission_invisible","others_access_permission_visible","others_access_permission_editable"],"xEnum":["others_access_permission_invisible","others_access_permission_visible","others_access_permission_editable"],"description":"<p>（工作表保护区域中）其他人具有的权限类型</p>\n","children":[]},{"key":"data.protection_infos.items.protection_info.items.protection_ranges","name":"protection_ranges","deprecated":false,"type":"array[object]","required":"是","enum":[],"xEnum":[],"description":"<p>区域范围列表</p>\n","children":[{"key":"data.protection_infos.items.protection_info.items.protection_ranges.items.col_from","name":"col_from","deprecated":false,"type":"integer","required":"是","enum":[],"xEnum":[],"description":"<p>列起始索引位置</p>\n","children":[]},{"key":"data.protection_infos.items.protection_info.items.protection_ranges.items.col_to","name":"col_to","deprecated":false,"type":"integer","required":"是","enum":[],"xEnum":[],"description":"<p>列最后索引位置</p>\n","children":[]},{"key":"data.protection_infos.items.protection_info.items.protection_ranges.items.row_from","name":"row_from","deprecated":false,"type":"integer","required":"是","enum":[],"xEnum":[],"description":"<p>行起始索引位置</p>\n","children":[]},{"key":"data.protection_infos.items.protection_info.items.protection_ranges.items.row_to","name":"row_to","deprecated":false,"type":"integer","required":"是","enum":[],"xEnum":[],"description":"<p>行最后索引位置</p>\n","children":[]}]},{"key":"data.protection_infos.items.protection_info.items.protection_user_data","name":"protection_user_data","deprecated":false,"type":"array[object]","required":"是","enum":[],"xEnum":[],"description":"<p>（工作表保护区域中）指定用户的权限列表信息列表</p>\n","children":[{"key":"data.protection_infos.items.protection_info.items.protection_user_data.items.access_permission","name":"access_permission","deprecated":false,"type":"string","required":"是","enum":["user_access_permission_visible","user_access_permission_editable"],"xEnum":["user_access_permission_visible","user_access_permission_editable"],"description":"<p>（工作表区域权限中）指定用户的权限类型</p>\n","children":[]},{"key":"data.protection_infos.items.protection_info.items.protection_user_data.items.user_id","name":"user_id","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>用户ID</p>\n","children":[]}]},{"key":"data.protection_infos.items.protection_info.items.range_creator_id","name":"range_creator_id","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>区域权限创建者用户ID</p>\n","children":[]}]}]}]},{"key":"code","name":"code","deprecated":false,"type":"integer","required":"是","enum":[],"xEnum":[],"description":"-","children":[]},{"key":"msg","name":"msg","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>人可阅读的文本信息，可能会按不同的语言或地区返回不同的文本信息。</p>\n","children":[]}]' />
+
+## 响应体示例
+```json
+{
+  "data": {
+    "protection_infos": [
+      {
+        "master_id": "string",
+        "other_user_permission": "user_access_permission_visible",
+        "protection_info": [
+          {
+            "id": "string",
+            "others_access_permission": "others_access_permission_invisible",
+            "protection_ranges": [
+              {
+                "col_from": 0,
+                "col_to": 0,
+                "row_from": 0,
+                "row_to": 0
+              }
+            ],
+            "protection_user_data": [
+              {
+                "access_permission": "user_access_permission_visible",
+                "user_id": "string"
+              }
+            ],
+            "range_creator_id": "string"
+          }
+        ]
+      }
+    ]
+  },
+  "code": 0,
+  "msg": "string"
+}
+```
+
+

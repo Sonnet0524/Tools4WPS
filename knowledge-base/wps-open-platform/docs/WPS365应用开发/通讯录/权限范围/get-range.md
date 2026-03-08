@@ -1,0 +1,76 @@
+---
+title: Get Contact Permissions Scope
+breadcrumb: WPS365应用开发 > 通讯录 > 权限范围 > 获取通讯录权限范围
+source: raw_md/app-integration-dev/wps365/server/address-book/range/get-range.md
+---
+
+# 获取通讯录权限范围
+
+获取当前身份的通讯录权限范围，目前仅支持应用身份
+
+## 请求说明
+
+| **请求地址** | **https://openapi.wps.cn/v7/contacts/permissions_scope**                                                   |
+| :----------- | :--------------------------------------------------------------------------------------------------------- |
+| **请求方法** | GET                                                                                                        |
+| **签名方式** | [KSO-1](/app-integration-dev/wps365/server/api-description/signature-description)                        |
+| **权限要求** | 查询和管理通讯录信息（应用授权） `kso.contact.readwrite`<br/>查询通讯录信息（应用授权） `kso.contact.read` |
+
+## 请求头（Header）
+
+| **Header 名称**     | **参数类型** | **是否必填** | **说明**                                                                                                     |
+| :------------------ | :----------- | :----------- | :----------------------------------------------------------------------------------------------------------- |
+| Content-Type        | string       | 是           | 使用：`application/json`                                                                                     |
+| X-Kso-Date          | string       | 是           | RFC1123 格式的日期，例: `Wed, 23 Jan 2013 06:43:08 GMT`                                                      |
+| X-Kso-Authorization | string       | 是           | KSO-1 签名值，详见[《签名方法》](/app-integration-dev/wps365/server/api-description/signature-description) |
+| Authorization       | string       | 是           | 授权凭证，格式为：`Bearer {access_token}`                                                                    |
+
+## 查询参数（Query）
+
+<!-- 为了保持文档格式统一：（1）参数说明中请使用中文全角标点符号；（2）中英文间请添加空格 -->
+
+| **名称** | **参数类型**  | **是否必填** | **说明**                                                                                                  |
+| :------- | :------------ | :----------- |:--------------------------------------------------------------------------------------------------------|
+| scopes   | array[string] | 是           | 权限范围<br/> `org`：组织架构内；`partner`：关联组织。目前仅支持查询 `org`（组织架构范围内)<br/>格式为 `scopes={string_1}&scopes={string_2}` |
+
+## 请求地址示例
+
+```
+[GET] https://openapi.wps.cn/v7/contacts/permissions_scope?scopes={string_1}&scopes={string_2}
+```
+
+## 响应体
+
+<!-- 为了保持文档格式统一：（1）参数说明中请使用中文全角标点符号；（2）中英文间请添加空格 -->
+
+| **名称**            | **参数类型**  | **说明**                                                                                                      |
+| :------------------ | :------------ | :------------------------------------------------------------------------------------------------------------ |
+| code                | integer       | 响应代码。非 0 表示失败，参照[《状态码说明》](/app-integration-dev/wps365/server/api-description/errorcode) |
+| msg                 | string        | 响应信息                                                                                                      |
+| data                | object        | 响应数据                                                                                                      |
+| ∟ items             | array[object] | 通讯录权限信息列表                                                                                                             |
+| ∟ ∟ dept_ids        | array[string] | 部门 id 列表                                                                                                  |
+| ∟ ∟ permission_type | string[enum]  | 权限类型<br/>`visit`；`search` <br/> 目前仅支持返回：visit                                                    |
+| ∟ ∟ scope           | string[enum]  | 权限范围<br/>`org`：组织架构内；`partner`：关联组织<br/>目前仅支持返回：org                                   |
+| ∟ ∟ user_ids        | array[string] | 用户 id 列表                                                                                                  |
+
+## 响应体示例
+
+<!-- 为了保持文档格式统一，请使用 2 个空格作为 json 的缩进符 -->
+
+```json
+{
+  "code": 0,
+  "data": {
+    "items": [
+      {
+        "dept_ids": ["string"],
+        "permission_type": "string[enum]",
+        "scope": "string[enum]",
+        "user_ids": ["string"]
+      }
+    ]
+  },
+  "msg": "string"
+}
+```

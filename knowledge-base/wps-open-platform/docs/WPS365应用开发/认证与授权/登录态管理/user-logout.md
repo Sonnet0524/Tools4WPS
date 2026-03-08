@@ -1,0 +1,65 @@
+---
+title: User Logout
+breadcrumb: WPS365应用开发 > 认证与授权 > 登录态管理 > 用户登出
+source: raw_md/app-integration-dev/wps365/server/certification-authorization/session-management/user-logout.md
+---
+
+
+# 用户登出
+
+调用该接口可登出 WPS 365 用户登录态
+
+
+
+**标签**：`通讯录` 
+
+
+## 请求说明
+| 字段          | 值                  |
+|--------------|---------------------|
+| **<div style="white-space: nowrap;">请求地址</div>**  | https://openapi.wps.cn/v7/users/batch_logout          |
+| **<div style="white-space: nowrap;">HTTP 方法</div>** | `POST`    |
+| **<div style="white-space: nowrap;">接口描述</div>**  | 批量登出指定user_id的企业成员 |
+| **<div style="white-space: nowrap;">签名方式</div>**  | [KSO-1](https://open.wps.cn/documents/app-integration-dev/wps365/server/api-description/signature-description) |
+| **<div style="white-space: nowrap;">限频策略</div>** | 无 |
+| **<div style="white-space: nowrap;">权限要求</div>** | <div><div>查询和管理通讯录信息(应用授权) `kso.contact.readwrite`</div><div style="margin-top: 5px;"></div><div>查询通讯录信息(应用授权) `kso.contact.read`</div></div> |
+
+
+## 请求头 (Headers)
+| 属性名 | 类型 | 是否必填 | 描述 | 可选值 |
+|-------|------|------|-------|-------|
+| <div style="white-space: nowrap;">X-Kso-Id-Type</div> | `string` | 否 | 类型<br>  * **internal** - 内部<br>  * **external** - 外部<br> | `internal`, `external` 
+
+
+
+
+
+
+
+## 请求体(Body)
+**请求体格式:** `application/json`
+<OpenapiRenderTable  dataSource='[{"key":"user_ids","name":"user_ids","deprecated":false,"type":"array[string]","required":"是","enum":[],"xEnum":[],"description":"<p>user_id列表</p>\n","children":[]}]' />
+
+## 请求体示例
+```json
+{
+  "user_ids": [
+    "string"
+  ]
+}
+```
+
+## 响应体(Response)
+**HTTP状态码:** `200`<br/>
+**响应体格式:** `application/json`
+<OpenapiRenderTable hideHeaderKeys='required' dataSource='[{"key":"code","name":"code","deprecated":false,"type":"integer","required":"是","enum":[],"xEnum":[],"description":"-","children":[]},{"key":"msg","name":"msg","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>人可阅读的文本信息，可能会按不同的语言或地区返回不同的文本信息。</p>\n","children":[]}]' />
+
+## 响应体示例
+```json
+{
+  "code": 0,
+  "msg": "string"
+}
+```
+
+

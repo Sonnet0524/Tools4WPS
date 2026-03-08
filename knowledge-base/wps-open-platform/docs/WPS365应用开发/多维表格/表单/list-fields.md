@@ -1,0 +1,64 @@
+---
+title: List Form Questions
+breadcrumb: WPS365应用开发 > 多维表格 > 表单 > 列出表单问题
+source: raw_md/app-integration-dev/wps365/server/dbsheet/forms/list-fields.md
+---
+
+
+# 列出表单问题
+
+
+
+**标签**：`多维表` 
+
+
+## 请求说明
+| 字段          | 值                  |
+|--------------|---------------------|
+| **<div style="white-space: nowrap;">请求地址</div>**  | https://openapi.wps.cn/v7/dbsheet/{file_id}/sheets/{sheet_id}/forms/{view_id}/fields          |
+| **<div style="white-space: nowrap;">HTTP 方法</div>** | `GET`    |
+| **<div style="white-space: nowrap;">接口描述</div>**  | 无 |
+| **<div style="white-space: nowrap;">签名方式</div>**  | [KSO-1](https://open.wps.cn/documents/app-integration-dev/wps365/server/api-description/signature-description) |
+| **<div style="white-space: nowrap;">限频策略</div>** | 无 |
+| **<div style="white-space: nowrap;">权限要求</div>** | <div><div>管理多维表格(应用授权) `kso.dbsheet.readwrite`</div><div style="margin-top: 5px;"></div><div>查询多维表格(应用授权) `kso.dbsheet.read`</div><div style="margin-top: 5px;"></div><div>管理多维表格(用户授权) `kso.dbsheet.readwrite`</div><div style="margin-top: 5px;"></div><div>查询多维表格(用户授权) `kso.dbsheet.read`</div></div> |
+
+
+
+
+## 路径参数 (Path)
+| 属性名 | 类型 | 是否必填 | 描述 | 可选值 |
+|-------|------|------|-------|-------|
+| <div style="white-space: nowrap;">file_id</div> | `string` | 是 | 文件 ID | - 
+| <div style="white-space: nowrap;">sheet_id</div> | `integer` | 是 | 数据表 ID | - 
+| <div style="white-space: nowrap;">view_id</div> | `string` | 是 | 表单视图 ID | - 
+
+
+
+
+
+
+
+## 响应体(Response)
+**HTTP状态码:** `200`<br/>
+**响应体格式:** `application/json`
+<OpenapiRenderTable hideHeaderKeys='required' dataSource='[{"key":"data","name":"data","deprecated":false,"type":"object","required":"是","enum":[],"xEnum":[],"description":"-","children":[{"key":"data.form_fields","name":"form_fields","deprecated":false,"type":"array[object]","required":"是","enum":[],"xEnum":[],"description":"<p>字段列表</p>\n","children":[{"key":"data.form_fields.items.description","name":"description","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>字段描述</p>\n","children":[]},{"key":"data.form_fields.items.field_id","name":"field_id","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>字段 ID</p>\n","children":[]},{"key":"data.form_fields.items.required","name":"required","deprecated":false,"type":"boolean","required":"是","enum":[],"xEnum":[],"description":"<p>是否必填</p>\n","children":[]},{"key":"data.form_fields.items.title","name":"title","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>字段名称</p>\n","children":[]}]}]},{"key":"code","name":"code","deprecated":false,"type":"integer","required":"是","enum":[],"xEnum":[],"description":"-","children":[]},{"key":"msg","name":"msg","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>人可阅读的文本信息，可能会按不同的语言或地区返回不同的文本信息。</p>\n","children":[]}]' />
+
+## 响应体示例
+```json
+{
+  "data": {
+    "form_fields": [
+      {
+        "description": "string",
+        "field_id": "string",
+        "required": true,
+        "title": "string"
+      }
+    ]
+  },
+  "code": 0,
+  "msg": "string"
+}
+```
+
+

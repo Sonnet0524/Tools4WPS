@@ -1,0 +1,63 @@
+---
+title: List View
+breadcrumb: WPS365应用开发 > 多维表格 > 视图 > 列出视图
+source: raw_md/app-integration-dev/wps365/server/dbsheet/views/list-view.md
+---
+
+
+# 列出视图
+
+
+
+**标签**：`多维表` 
+
+
+## 请求说明
+| 字段          | 值                  |
+|--------------|---------------------|
+| **<div style="white-space: nowrap;">请求地址</div>**  | https://openapi.wps.cn/v7/dbsheet/{file_id}/sheets/{sheet_id}/views          |
+| **<div style="white-space: nowrap;">HTTP 方法</div>** | `GET`    |
+| **<div style="white-space: nowrap;">接口描述</div>**  | 无 |
+| **<div style="white-space: nowrap;">签名方式</div>**  | [KSO-1](https://open.wps.cn/documents/app-integration-dev/wps365/server/api-description/signature-description) |
+| **<div style="white-space: nowrap;">限频策略</div>** | 无 |
+| **<div style="white-space: nowrap;">权限要求</div>** | <div><div>管理多维表格(应用授权) `kso.dbsheet.readwrite`</div><div style="margin-top: 5px;"></div><div>查询多维表格(应用授权) `kso.dbsheet.read`</div><div style="margin-top: 5px;"></div><div>管理多维表格(用户授权) `kso.dbsheet.readwrite`</div><div style="margin-top: 5px;"></div><div>查询多维表格(用户授权) `kso.dbsheet.read`</div></div> |
+
+
+
+
+## 路径参数 (Path)
+| 属性名 | 类型 | 是否必填 | 描述 | 可选值 |
+|-------|------|------|-------|-------|
+| <div style="white-space: nowrap;">file_id</div> | `string` | 是 | 文件 ID | - 
+| <div style="white-space: nowrap;">sheet_id</div> | `integer` | 是 | 数据表 ID | - 
+
+
+
+
+
+
+
+## 响应体(Response)
+**HTTP状态码:** `200`<br/>
+**响应体格式:** `application/json`
+<OpenapiRenderTable hideHeaderKeys='required' dataSource='[{"key":"data","name":"data","deprecated":false,"type":"object","required":"是","enum":[],"xEnum":[],"description":"-","children":[{"key":"data.views","name":"views","deprecated":false,"type":"array[object]","required":"是","enum":[],"xEnum":[],"description":"<p>视图</p>\n","children":[{"key":"data.views.items.id","name":"id","deprecated":false,"type":"string","required":"否","enum":[],"xEnum":[],"description":"<p>视图ID</p>\n","children":[]},{"key":"data.views.items.name","name":"name","deprecated":false,"type":"string","required":"否","enum":[],"xEnum":[],"description":"<p>视图名称</p>\n","children":[]},{"key":"data.views.items.records_count","name":"records_count","deprecated":false,"type":"integer","required":"否","enum":[],"xEnum":[],"description":"<p>记录数量</p>\n","children":[]},{"key":"data.views.items.type","name":"type","deprecated":false,"type":"string","required":"否","enum":[],"xEnum":[],"description":"<p>视图类型, 可选 Grid 表格视图, Kanban 看板视图, Gallery 画册视图, Form 表单视图, Gantt 甘特视图, Query 查询视图</p>\n","children":[]}]}]},{"key":"code","name":"code","deprecated":false,"type":"integer","required":"是","enum":[],"xEnum":[],"description":"-","children":[]},{"key":"msg","name":"msg","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>人可阅读的文本信息，可能会按不同的语言或地区返回不同的文本信息。</p>\n","children":[]}]' />
+
+## 响应体示例
+```json
+{
+  "data": {
+    "views": [
+      {
+        "id": "string",
+        "name": "string",
+        "records_count": 0,
+        "type": "string"
+      }
+    ]
+  },
+  "code": 0,
+  "msg": "string"
+}
+```
+
+

@@ -13,6 +13,7 @@
 5. [文档维护](#文档维护)
 6. [经验沉淀](#经验沉淀)
 7. [与 Human 协作](#与-human-协作)
+8. [API 快速查询](#api-快速查询)
 
 ---
 
@@ -331,6 +332,71 @@ cp -r agents/_templates/core-team agents/my-core-team
 
 ---
 
+## API 快速查询
+
+### 索引文件位置
+
+**机器索引**: `knowledge-base/wps-open-platform/api-index.json`
+
+### 查询方式
+
+**1. 按端点查找** (最快):
+```json
+// 读取 endpoint_index 字段
+{
+  "/v7/users": { "name": "查询企业下所有用户", "category": "通讯录" },
+  "/v7/messages/create": { "name": "发送消息", "category": "消息与会话" }
+}
+```
+
+**2. 按类别查找**:
+```json
+// 读取 categories 获取类别列表，再筛选 apis 数组
+{
+  "categories": {
+    "通讯录": { "count": 39, "permission_prefix": "kso.contact" },
+    "消息与会话": { "count": 30, "permission_prefix": "kso.chat" }
+  }
+}
+```
+
+**3. 按权限查找**:
+```json
+// 读取 permissions_available 字段
+{
+  "kso.contact.read": "通讯录读取",
+  "kso.chat_message.readwrite": "消息读写"
+}
+```
+
+### 使用场景
+
+| 场景 | 查询方式 |
+|------|----------|
+| 开发新 Tool 前 | 查 `categories` 获取该类别所有 API |
+| 查找具体端点 | 查 `endpoint_index` 快速定位 |
+| 确认权限要求 | 查 `apis` 数组中的 `permission` 字段 |
+| 获取完整文档 | 用 `apis[].file` 路径读取详细文档 |
+
+### 示例: 查询消息 API
+
+```
+1. 读取 api-index.json
+2. 查找 "category": "消息与会话" 的 API
+3. 获取端点列表: /v7/messages/create, /v7/chats, ...
+4. 查看权限: kso.chat_message.readwrite
+5. 获取详细文档: 消息与会话/消息/发送消息.md
+```
+
+### 索引统计
+
+- **总 API 数**: 327
+- **核心类别**: 通讯录(39), 消息与会话(30), 待办(18), 认证(9)
+- **扩展类别**: 日历(37), 会议(19), 云文档(70)
+- **其他类别**: 用户组(18), 审批(32), 会议室(28), ...
+
+---
+
 ## 参考资源
 
 - [Agent Team 设计方法论](archive/sg-agentteam-experiences/pm/)
@@ -341,4 +407,4 @@ cp -r agents/_templates/core-team agents/my-core-team
 ---
 
 **维护者**: PM Agent  
-**最后更新**: 2026-03-08
+**最后更新**: 2026-03-08 (添加 API 快速查询)

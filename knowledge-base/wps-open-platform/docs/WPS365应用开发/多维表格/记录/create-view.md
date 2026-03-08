@@ -1,0 +1,109 @@
+---
+title: Retrieve Multiple Records
+breadcrumb: WPS365应用开发 > 多维表格 > 记录 > 检索多条记录
+source: raw_md/app-integration-dev/wps365/server/dbsheet/records/create-view.md
+---
+
+# 检索多条记录
+
+## 请求说明
+
+| **请求地址** | **https://openapi.wps.cn/v7/coop/dbsheet/{file_id}/sheets/{sheet_id}/records/search**            |
+| :----------- | :----------------------------------------------------------------------------------------------- |
+| **请求方法** | POST                                                                                             |
+| **签名方式** | [KSO-1](/app-integration-dev/wps365/server/api-description/signature-description)              |
+| **权限要求** | 管理多维表格（用户授权） `kso.dbsheet.readwrite`<br/>查询多维表格（用户授权） `kso.dbsheet.read` <br/>管理多维表格（应用授权） `kso.dbsheet.readwrite`<br/>查询多维表格（应用授权） `kso.dbsheet.read` |
+
+## 请求头（Header）
+
+| **Header 名称**     | **参数类型** | **是否必填** | **说明**                                                                                                     |
+| :------------------ | :----------- | :----------- | :----------------------------------------------------------------------------------------------------------- |
+| Content-Type        | string       | 是           | 使用：`application/json`                                                                                     |
+| X-Kso-Date          | string       | 是           | RFC1123 格式的日期，例: `Wed, 23 Jan 2013 06:43:08 GMT`                                                      |
+| X-Kso-Authorization | string       | 是           | KSO-1 签名值，详见[《签名方法》](/app-integration-dev/wps365/server/api-description/signature-description) |
+| Authorization       | string       | 是           | 授权凭证，格式为：`Bearer {access_token}`                                                                    |
+
+## 路径参数（Path）
+
+<!-- 为了保持文档格式统一：（1）参数说明中请使用中文全角标点符号；（2）中英文间请添加空格 -->
+
+| **名称** | **参数类型** | **说明**  |
+| :------- | :----------- | :-------- |
+| file_id  | string       | 文件 id   |
+| sheet_id | integer      | 数据表 id |
+
+## 请求体（Body）
+
+<!-- 为了保持文档格式统一：（1）参数说明中请使用中文全角标点符号；（2）中英文间请添加空格 -->
+
+| **名称**               | **参数类型**  | **是否必填** | **说明**                                                                                                                                                                                                                                                                             |
+| :--------------------- | :------------ | :----------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| prefer_id              | boolean       | 否           | 是否使用字段 / 选项 id 而不是字段 / 选项名来标识。 选填                                                                                                                                                                                                                              |
+| records                | array[string] | 是           | 记录 id 列表                                                                                                                                                                                                                                                                         |
+| show_fields_info       | boolean       | 否           | 是否展示字段信息。 选填。 为 true 时，会额外地返回一个 fields 结构体，展示字段信息（类似 Base Schema 中的 fields）。若请求参数指定 fields，则返回的 fields 即为指定的 fields 字段；请求参数未指定 fields 时，将根据是否指定了 viewid 决定返回 view 上的可见字段或 sheet 上的全部字段 |
+| show_record_extra_info | boolean       | 否           | 是否展示额外信息。 选填。 为 true 时，会额外显示创建者、创建时间、最后修改者、最后修改时间信息（与是否有创建者、创建时间、最后修改者、最后修改时间字段无关）                                                                                                                         |
+| text_value             | string        | 否           | 返回值类型。 original 返回原始值， text 返回文本值， compound 返回原始值和文本值                                                                                                                                                                                                     |
+
+## 请求地址示例
+
+```
+[POST] https://openapi.wps.cn/v7/coop/dbsheet/{file_id}/sheets/{sheet_id}/records/search
+```
+
+## 请求体示例
+
+<!-- 为了保持文档格式统一，请使用 2 个空格作为 json 的缩进符 -->
+
+```json
+{
+  "prefer_id": false,
+  "show_fields_info": false,
+  "text_value": "text",
+  "records": [
+    "B",
+    "C"
+  ]
+}
+```
+
+## 响应体
+
+<!-- 为了保持文档格式统一：（1）参数说明中请使用中文全角标点符号；（2）中英文间请添加空格 -->
+
+| **名称**                       | **参数类型**  | **说明**                                                                                                                                                                                                                                                                                                                         |
+| :----------------------------- | :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| code                           | integer       | 响应代码。非 0 表示失败，参照[《状态码说明》](/app-integration-dev/wps365/server/api-description/errorcode)                                                                                                                                                                                                                    |
+| msg                            | string        | 响应信息                                                                                                                                                                                                                                                                                                                         |
+| data                           | object        | 响应数据                                                                                                                                                                                                                                                                                                                         |
+| ∟ fields_schema               | array[object] | 字段列表，详见[多维表格参数说明](/app-integration-dev/wps365/server/dbsheet/parameters-description)                                                                                                                                                                                                                                                                                                                         |
+| ∟ records                     | array[object] | 记录字段值                                                                                                                                                                                                                                                                                                                       |
+| ∟ ∟ created_time             | string        | 记录创建时间                                                                                                                                                                                                                                                                                                                     |
+| ∟ ∟ creator                  | string        | 记录创建者                                                                                                                                                                                                                                                                                                                       |
+| ∟ ∟ fields                   | object        | 记录值                                                                                                                                                                                                                                                                                                                           |
+| ∟ ∟ id                       | string        | 记录 id                                                                                                                                                                                                                                                                                                                          |
+| ∟ ∟ last_modified_by         | string        | 记录最后修改人                                                                                                                                                                                                                                                                                                                   |
+| ∟ ∟ last_modified_time       | string        | 记录最后修改时间                                                                                                                                                                                                                                                                                                                 |
+| more                           | object        | 更多的错误信息                                                                                                                                                                                                                                                                                                                   |
+
+## 响应体示例
+
+<!-- 为了保持文档格式统一，请使用 2 个空格作为 json 的缩进符 -->
+
+```json
+{
+  "code": 0,
+  "msg": "",
+  "data": {
+    "records": [
+      {
+        "fields": "{\"单选项\":\"选项1\",\"图片和附件\":\"12KB.docx,aigc\",\"数字\":\"123.00 \",\"文本\":\"第一行文本\",\"日期\":\"2024/12/20\",\"等级\":\"1\"}",
+        "id": "B"
+      },
+      {
+        "fields": "{\"单选项\":\"选项2\",\"图片和附件\":\"14.4KB.png\",\"数字\":\"321.00 \",\"文本\":\"第二行文本\",\"日期\":\"2024/12/21\",\"等级\":\"2\"}",
+        "id": "C"
+      }
+    ]
+  }
+}
+```

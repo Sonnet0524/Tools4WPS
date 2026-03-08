@@ -1,0 +1,86 @@
+---
+title: Initialize Chunk Upload Task
+breadcrumb: WPS365应用开发 > 云文档 > 文件传输 > 分块上传任务初始化
+source: raw_md/app-integration-dev/wps365/server/yundoc/file-transfer/init-multipart-upload-task.md
+---
+
+
+# 分块上传任务初始化
+
+
+
+**标签**：`文件-上传下载` 
+
+
+## 请求说明
+| 字段          | 值                  |
+|--------------|---------------------|
+| **<div style="white-space: nowrap;">请求地址</div>**  | https://openapi.wps.cn/v7/drives/{drive_id}/files/{parent_id}/create_multipart_upload_task          |
+| **<div style="white-space: nowrap;">HTTP 方法</div>** | `POST`    |
+| **<div style="white-space: nowrap;">接口描述</div>**  | 分块上传步骤:<br><br>            1.分块上传任务初始化 <br><br>            2.签发分块上传的块上传地址(<font color=red>私网需要,公网不需要</font>,公网第1步已经获取到了上传地址.具体参考[分块上传任务初始化]响应体描述)<br><br>            3.上传分块实体 <br><br>            4.调用[提交文件上传完成]接口，<font color=red>注意和整块上传的提交完成不是同一个接口</font>"<br>           |
+| **<div style="white-space: nowrap;">签名方式</div>**  | [KSO-1](https://open.wps.cn/documents/app-integration-dev/wps365/server/api-description/signature-description) |
+| **<div style="white-space: nowrap;">限频策略</div>** | 无 |
+| **<div style="white-space: nowrap;">权限要求</div>** | <div><div>查询和管理文件(应用授权) `kso.file.readwrite`</div><div style="margin-top: 5px;"></div><div>应用身份管理文档(应用授权) `kso.appfile.readwrite`</div><div style="margin-top: 5px;"></div><div>查询和管理文件(用户授权) `kso.file.readwrite`</div></div> |
+
+
+
+
+## 路径参数 (Path)
+| 属性名 | 类型 | 是否必填 | 描述 | 可选值 |
+|-------|------|------|-------|-------|
+| <div style="white-space: nowrap;">drive_id</div> | `string` | 是 | 驱动盘id | - 
+| <div style="white-space: nowrap;">parent_id</div> | `string` | 是 | 文件夹id（根目录时为0） | - 
+
+
+
+
+
+## 请求体(Body)
+**请求体格式:** `application/json`
+<OpenapiRenderTable  dataSource='[{"key":"delegate_user_id","name":"delegate_user_id","deprecated":false,"type":"string","required":"否","enum":[],"xEnum":[],"description":"<p>应用身份可以通过delegate_user_id参数委托用户上传文件实体。 文件操作权限依然根据操作者的进行判断，但是上传实体时需要校验delegate_user_id的身份凭证。提交文件上传后, 文件的创建者依然是操作者。该参数仅允许操作者是应用身份时使用。</p>\n","children":[]},{"key":"display_size","name":"display_size","deprecated":false,"type":"integer","required":"否","enum":[],"xEnum":[],"description":"<p>文件展示大小，不得小于文件本体的真实大小，用于计算文件空间占用、文件信息展示、文件大小排序, 该字段为空默认使用文件真实大小</p>\n","children":[]},{"key":"file_id","name":"file_id","deprecated":false,"type":"string","required":"否","enum":[],"xEnum":[],"description":"<p>更新上传时指定文件id</p>\n","children":[]},{"key":"hashes","name":"hashes","deprecated":false,"type":"array[object]","required":"否","enum":[],"xEnum":[],"description":"<p>文件哈希信息，用于设置对象key和完整性校验；<font color=red>公网sha256必传</font>，其他散列值选传，公网不支持s2s</p>\n","children":[{"key":"hashes.items.sum","name":"sum","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>哈希结果</p>\n","children":[]},{"key":"hashes.items.type","name":"type","deprecated":false,"type":"string","required":"是","enum":["sha256","md5","sha1","s2s"],"xEnum":["sha256","md5","sha1","s2s"],"description":"<p>哈希类型</p>\n","children":[]}]},{"key":"internal","name":"internal","deprecated":false,"type":"boolean","required":"否","enum":[],"xEnum":[],"description":"<p>是否返回内网上传地址，默认为false。(<font color=red>内部服务支持内网传输请优先走内网</font>)</p>\n","children":[]},{"key":"mode","name":"mode","deprecated":false,"type":"string","required":"否","enum":["sequential","parallel"],"xEnum":["sequential","parallel"],"description":"<p>上传模式，分为顺序模式和并发乱序模式。顺序模式要求所有块上传按顺序进行，并发或乱序将导致报错；并发乱序模式允许乱序和并发上传，但上传请求头必须带块的parallel_hash信息。<font color=red>公网必传但目前仅支持sequential</font>，私有化无此参数。</p>\n","children":[]},{"key":"name","name":"name","deprecated":false,"type":"string","required":"否","enum":[],"xEnum":[],"description":"<p>文件名(<font color=red>更新文件时忽略</font>)</p>\n","children":[]},{"key":"on_name_conflict","name":"on_name_conflict","deprecated":false,"type":"string","required":"否","enum":["fail","rename","overwrite","replace"],"xEnum":["fail","rename","overwrite","replace"],"description":"<p>新建时文件名冲突行为处理方式(公网目前只支持rename和overwrite), 默认不传为rename</p>\n","children":[]},{"key":"parent_path","name":"parent_path","deprecated":false,"type":"array[string]","required":"否","enum":[],"xEnum":[],"description":"<p>该参数用于指定相对于当前文件目录的相对路径。数组中的每个元素代表一个路径名，而非路径ID。若指定的路径不存在，系统将自动创建该路径</p>\n","children":[]},{"key":"size","name":"size","deprecated":false,"type":"integer","required":"是","enum":[],"xEnum":[],"description":"<p>文件本体的真实大小</p>\n","children":[]},{"key":"storage_base_domain","name":"storage_base_domain","deprecated":false,"type":"string","required":"否","enum":[],"xEnum":[],"description":"<p><a href=\"http://wps.cn/kdocs.cn/wps365.com(%E5%9B%BD%E9%99%85%E5%8C%96)/wps.com(%E5%9B%BD%E9%99%85%E5%8C%96),%E7%AD%BE%E5%8F%91%E7%9A%84%E5%AD%98%E5%82%A8%E7%BD%91%E5%85%B3%E5%9C%B0%E5%9D%80%E4%BC%9A%E6%A0%B9%E6%8D%AEbase_domain%E4%BC%98%E5%85%88%E5%8C%B9%E9%85%8D\">wps.cn/kdocs.cn/wps365.com(国际化)/wps.com(国际化),签发的存储网关地址会根据base_domain优先匹配</a> *.wps.cn/*.kdocs.cn/*.wps365.com/*.wps.com。<br>\n为空会根据请求的host优先选择关联的base_domain.(注意目前有些旧文件未被存储网关托管,针对这些文件的下载此参数可能失效)</p>\n","children":[]},{"key":"upload_scene","name":"upload_scene","deprecated":false,"type":"string","required":"否","enum":["normal_upload","roaming_upload"],"xEnum":["normal_upload","roaming_upload"],"description":"<p>文件上传场景,默认是’normal_upload’</p>\n","children":[]}]' />
+
+## 请求体示例
+```json
+{
+  "delegate_user_id": "string",
+  "display_size": 0,
+  "file_id": "string",
+  "hashes": [
+    {
+      "sum": "string",
+      "type": "sha256"
+    }
+  ],
+  "internal": true,
+  "mode": "sequential",
+  "name": "string",
+  "on_name_conflict": "fail",
+  "parent_path": [
+    "string"
+  ],
+  "size": 0,
+  "storage_base_domain": "string",
+  "upload_scene": "normal_upload"
+}
+```
+
+## 响应体(Response)
+**HTTP状态码:** `200`<br/>
+**响应体格式:** `application/json`
+<OpenapiRenderTable hideHeaderKeys='required' dataSource='[{"key":"data","name":"data","deprecated":false,"type":"object","required":"是","enum":[],"xEnum":[],"description":"<p>初始化分块上传任务响应体</p>\n","children":[{"key":"data.part_count","name":"part_count","deprecated":false,"type":"integer","required":"是","enum":[],"xEnum":[],"description":"<p>分块数量，客户端必须按此数量进行分块</p>\n","children":[]},{"key":"data.part_size","name":"part_size","deprecated":false,"type":"integer","required":"是","enum":[],"xEnum":[],"description":"<p>分块大小，客户端上传时，除最后一块之外，其他块大小必须严格与此值一致，否则报错</p>\n","children":[]},{"key":"data.upload_addr","name":"upload_addr","deprecated":false,"type":"string","required":"否","enum":[],"xEnum":[],"description":"<p>上传块地址，<font color=red>公网环境后续直接向此地址完成所有块的上传，私有化环境无此参数</font>。当返回地址一级域名为金山办公管理域名（<a href=\"http://wps.xn--cnkdocs-if7n.cn\">wps.cn或kdocs.cn</a>）时，调用上传地址时需要带与调用此初始化任务接口相同的登录凭据（wpssid或ksosid）和设备信息凭据（wpsua或kso设备信息采集方案，若调用初始化任务接口时未提供则无需提供），存储网关会进行校验。存储网关接口可参考文档：<a href=\"https://365.kdocs.cn/l/crbR9EANphse\">https://365.kdocs.cn/l/crbR9EANphse</a></p>\n","children":[]},{"key":"data.upload_id","name":"upload_id","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>上传标识</p>\n","children":[]}]},{"key":"code","name":"code","deprecated":false,"type":"integer","required":"是","enum":[],"xEnum":[],"description":"-","children":[]},{"key":"msg","name":"msg","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>人可阅读的文本信息，可能会按不同的语言或地区返回不同的文本信息。</p>\n","children":[]}]' />
+
+## 响应体示例
+```json
+{
+  "data": {
+    "part_count": 0,
+    "part_size": 0,
+    "upload_addr": "string",
+    "upload_id": "string"
+  },
+  "code": 0,
+  "msg": "string"
+}
+```
+
+

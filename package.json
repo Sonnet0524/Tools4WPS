@@ -1,0 +1,19 @@
+{
+  "name": "wps-tools",
+  "version": "0.1.0",
+  "description": "WPS 云文档 Tools 和 Skills",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run src/index.ts",
+    "test": "bun test",
+    "lint": "eslint src/",
+    "build": "bun build src/index.ts --outdir dist"
+  },
+  "dependencies": {
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.0.0"
+  }
+}

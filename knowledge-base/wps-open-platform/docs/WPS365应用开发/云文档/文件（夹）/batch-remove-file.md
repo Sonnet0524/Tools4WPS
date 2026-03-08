@@ -1,0 +1,68 @@
+---
+title: Move Files (Folders) In Bulk
+breadcrumb: WPS365应用开发 > 云文档 > 文件（夹） > 批量移动文件（夹）
+source: raw_md/app-integration-dev/wps365/server/yundoc/file/batch-remove-file.md
+---
+
+
+# 批量移动文件（夹)
+
+
+
+**标签**：`文件` 
+
+
+## 请求说明
+| 字段          | 值                  |
+|--------------|---------------------|
+| **<div style="white-space: nowrap;">请求地址</div>**  | https://openapi.wps.cn/v7/drives/{drive_id}/files/batch_move          |
+| **<div style="white-space: nowrap;">HTTP 方法</div>** | `POST`    |
+| **<div style="white-space: nowrap;">接口描述</div>**  | 批量移动文件(夹) |
+| **<div style="white-space: nowrap;">签名方式</div>**  | [KSO-1](https://open.wps.cn/documents/app-integration-dev/wps365/server/api-description/signature-description) |
+| **<div style="white-space: nowrap;">限频策略</div>** | 无 |
+| **<div style="white-space: nowrap;">权限要求</div>** | <div><div>查询和管理文件(应用授权) `kso.file.readwrite`</div><div style="margin-top: 5px;"></div><div>查询和管理文件(用户授权) `kso.file.readwrite`</div></div> |
+
+
+
+
+## 路径参数 (Path)
+| 属性名 | 类型 | 是否必填 | 描述 | 可选值 |
+|-------|------|------|-------|-------|
+| <div style="white-space: nowrap;">drive_id</div> | `string` | 是 | 驱动盘id | - 
+
+
+
+
+
+## 请求体(Body)
+**请求体格式:** `application/json`
+<OpenapiRenderTable  dataSource='[{"key":"dst_drive_id","name":"dst_drive_id","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>目标驱动盘id</p>\n","children":[]},{"key":"dst_parent_id","name":"dst_parent_id","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>目标文件夹id（根目录时为0）</p>\n","children":[]},{"key":"file_ids","name":"file_ids","deprecated":false,"type":"array[string]","required":"是","enum":[],"xEnum":[],"description":"<p>文件id列表</p>\n","children":[]}]' />
+
+## 请求体示例
+```json
+{
+  "dst_drive_id": "string",
+  "dst_parent_id": "string",
+  "file_ids": [
+    "string"
+  ]
+}
+```
+
+## 响应体(Response)
+**HTTP状态码:** `200`<br/>
+**响应体格式:** `application/json`
+<OpenapiRenderTable hideHeaderKeys='required' dataSource='[{"key":"data","name":"data","deprecated":false,"type":"object","required":"是","enum":[],"xEnum":[],"description":"<p>批量任务响应体</p>\n","children":[{"key":"data.task_id","name":"task_id","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>任务id</p>\n","children":[]}]},{"key":"code","name":"code","deprecated":false,"type":"integer","required":"是","enum":[],"xEnum":[],"description":"-","children":[]},{"key":"msg","name":"msg","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>人可阅读的文本信息，可能会按不同的语言或地区返回不同的文本信息。</p>\n","children":[]}]' />
+
+## 响应体示例
+```json
+{
+  "data": {
+    "task_id": "string"
+  },
+  "code": 0,
+  "msg": "string"
+}
+```
+
+

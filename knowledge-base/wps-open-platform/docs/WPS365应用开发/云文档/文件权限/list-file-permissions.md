@@ -1,0 +1,83 @@
+---
+title: List File Permissions
+breadcrumb: WPS365应用开发 > 云文档 > 文件权限 > 列举文件权限列表
+source: raw_md/app-integration-dev/wps365/server/yundoc/file-permission/list-file-permissions.md
+---
+
+
+# 列举文件权限列表
+
+
+
+**标签**：`文件权限` 
+
+
+## 请求说明
+| 字段          | 值                  |
+|--------------|---------------------|
+| **<div style="white-space: nowrap;">请求地址</div>**  | https://openapi.wps.cn/v7/drives/{drive_id}/files/{file_id}/permissions          |
+| **<div style="white-space: nowrap;">HTTP 方法</div>** | `GET`    |
+| **<div style="white-space: nowrap;">接口描述</div>**  | 列举文件权限列表 |
+| **<div style="white-space: nowrap;">签名方式</div>**  | [KSO-1](https://open.wps.cn/documents/app-integration-dev/wps365/server/api-description/signature-description) |
+| **<div style="white-space: nowrap;">限频策略</div>** | 无 |
+| **<div style="white-space: nowrap;">权限要求</div>** | <div><div>查询和管理文件权限(用户授权) `kso.file_permission.readwrite`</div><div style="margin-top: 5px;"></div><div>查询文件权限(用户授权) `kso.file_permission.read`</div></div> |
+
+
+## 请求头 (Headers)
+| 属性名 | 类型 | 是否必填 | 描述 | 可选值 |
+|-------|------|------|-------|-------|
+| <div style="white-space: nowrap;">X-Kso-Id-Type</div> | `string` | 否 | 类型<br>  * **internal** - 内部<br>  * **external** - 外部<br> | `internal`, `external` 
+
+
+
+## 路径参数 (Path)
+| 属性名 | 类型 | 是否必填 | 描述 | 可选值 |
+|-------|------|------|-------|-------|
+| <div style="white-space: nowrap;">drive_id</div> | `string` | 是 | drive_id表示盘id，参考drive.list_drives接口返回的data.items[?].id | - 
+| <div style="white-space: nowrap;">file_id</div> | `string` | 是 | file_id表示文件id,参考drive.list_file接口返回的data.items[?].id，支持传0，表示盘的根目录 | - 
+
+
+
+## 查询参数 (Query)
+| 属性名 | 类型 | 是否必填 | 描述 | 可选值 |
+|-------|------|------|-------|-------|
+| <div style="white-space: nowrap;">subject_type</div> | `object` | 否 | 类型筛选 | - 
+| <div style="white-space: nowrap;">subject_ids</div> | `array` | 否 | 传入授权主体id | - 
+| <div style="white-space: nowrap;">with_subject_tags</div> | `boolean` | 否 | 私有云适用，是否返回授权对象的附属属性标记信息 默认为false | - 
+
+
+
+
+
+## 响应体(Response)
+**HTTP状态码:** `200`<br/>
+**响应体格式:** `application/json`
+<OpenapiRenderTable hideHeaderKeys='required' dataSource='[{"key":"data","name":"data","deprecated":false,"type":"object","required":"是","enum":[],"xEnum":[],"description":"-","children":[{"key":"data.has_custom_permission","name":"has_custom_permission","deprecated":false,"type":"boolean","required":"是","enum":[],"xEnum":[],"description":"<p>是否有自定义权限,用于重置功能</p>\n","children":[]},{"key":"data.items","name":"items","deprecated":false,"type":"array[object]","required":"是","enum":[],"xEnum":[],"description":"-","children":[{"key":"data.items.items.id","name":"id","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>权限id</p>\n","children":[]},{"key":"data.items.items.role_id","name":"role_id","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>角色id</p>\n","children":[]},{"key":"data.items.items.role_name","name":"role_name","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>角色名称</p>\n","children":[]},{"key":"data.items.items.subject_attr","name":"subject_attr","deprecated":false,"type":"oneOf","required":"否","enum":[],"xEnum":[],"description":"-","children":[{"key":"data.items.items.subject_attr.oneOf[0].member_tag","name":"member_tag","deprecated":false,"type":"string","required":"否","enum":[],"xEnum":[],"description":"<p>团队内自定义标签组</p>\n","children":[],"isOneOfItem":true,"oneOfIndex":0},{"key":"data.items.items.subject_attr.oneOf[1].company_id","name":"company_id","deprecated":false,"type":"string","required":"否","enum":[],"xEnum":[],"description":"<p>subject_type = dept时，传递dept所在的company_id</p>\n","children":[],"isOneOfItem":true,"oneOfIndex":1}]},{"key":"data.items.items.subject_avatar","name":"subject_avatar","deprecated":false,"type":"string","required":"否","enum":[],"xEnum":[],"description":"<p>权限主体头像信息</p>\n","children":[]},{"key":"data.items.items.subject_id","name":"subject_id","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>权限主体标识</p>\n","children":[]},{"key":"data.items.items.subject_name","name":"subject_name","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>权限主体名称</p>\n","children":[]},{"key":"data.items.items.subject_tags","name":"subject_tags","deprecated":false,"type":"array[string]","required":"否","enum":["group_member","external_contact","enterprise_partner"],"xEnum":["group_member","external_contact","enterprise_partner"],"description":"<p>私有云适用，传递权限授权对象的附属属性标签</p>\n","children":[]},{"key":"data.items.items.subject_type","name":"subject_type","deprecated":false,"type":"string","required":"是","enum":["company","dept","group","user","device"],"xEnum":["company","dept","group","user","device"],"description":"<p>权限主体类型</p>\n","children":[]}]}]},{"key":"code","name":"code","deprecated":false,"type":"integer","required":"是","enum":[],"xEnum":[],"description":"-","children":[]},{"key":"msg","name":"msg","deprecated":false,"type":"string","required":"是","enum":[],"xEnum":[],"description":"<p>人可阅读的文本信息，可能会按不同的语言或地区返回不同的文本信息。</p>\n","children":[]}]' />
+
+## 响应体示例
+```json
+{
+  "data": {
+    "has_custom_permission": true,
+    "items": [
+      {
+        "id": "string",
+        "role_id": "string",
+        "role_name": "string",
+        "member_tag": "string",
+        "subject_avatar": "string",
+        "subject_id": "string",
+        "subject_name": "string",
+        "subject_tags": [
+          "string"
+        ],
+        "subject_type": "company"
+      }
+    ]
+  },
+  "code": 0,
+  "msg": "string"
+}
+```
+
+

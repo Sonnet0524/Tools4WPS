@@ -133,6 +133,89 @@ node screenshot.js <URL> [输出文件]
 
 ---
 
+## ⚙️ 环境要求
+
+### 系统要求
+- **Node.js**: v16.0.0 或更高版本
+- **npm**: v7.0.0 或更高版本
+- **操作系统**: macOS, Linux, Windows
+
+### 依赖安装
+
+**Browser Agent 依赖**：
+```bash
+cd tools/browser-agent
+npm install
+```
+
+这将安装：
+- **puppeteer**: ^21.0.0（浏览器自动化核心库）
+- Chromium 浏览器（首次安装时自动下载，约300MB）
+
+### 首次使用
+
+1. **检查环境**：
+   ```bash
+   node --version   # 应该 >= 16.0.0
+   npm --version    # 应该 >= 7.0.0
+   ```
+
+2. **安装依赖**：
+   ```bash
+   cd tools/browser-agent
+   npm install
+   ```
+
+3. **测试工具**：
+   ```bash
+   npm test
+   # 或
+   node test.js
+   ```
+
+4. **验证成功**：
+   看到 "✅ 所有测试通过！Browser Agent可以正常使用。" 表示安装成功
+
+### 常见问题
+
+**问题1：Chromium下载慢**
+```bash
+# 设置镜像源（可选）
+export PUPPETEER_DOWNLOAD_HOST=https://registry.npmmirror.com/mirrors
+npm install
+```
+
+**问题2：权限问题**
+```bash
+# macOS/Linux
+chmod +x tools/browser-agent/*.js
+```
+
+**问题3：内存不足**
+- Chromium会占用较多内存
+- 建议系统可用内存 >= 2GB
+
+### 工具位置
+
+| 工具 | 路径 | 用途 |
+|------|------|------|
+| fetch-spa.js | `tools/browser-agent/` | 抓取SPA页面（推荐） |
+| fetch-page.js | `tools/browser-agent/` | 基础页面抓取 |
+| extract-links.js | `tools/browser-agent/` | 提取页面链接 |
+| screenshot.js | `tools/browser-agent/` | 页面截图 |
+| test.js | `tools/browser-agent/` | 环境测试 |
+
+### 配置说明
+
+Browser Agent 配置文件：`tools/browser-agent/config.js`
+
+可调整参数：
+- **timeout**: 超时时间（默认30秒）
+- **viewport**: 浏览器视口大小
+- **waitUntil**: 页面加载等待条件
+
+---
+
 ## 📊 工作流程
 
 ### 调研任务流程

@@ -1,0 +1,138 @@
+# WPS开放平台
+
+来源：https://open.wps.cn/documents/app-integration-dev/wps365/server/todo/task/create-task
+实际URL：https://open.wps.cn/documents/app-integration-dev/wps365/server/todo/task/create-task
+
+---
+
+创建待办任务
+
+创建待办任务
+
+请求说明
+请求地址 https://openapi.wps.cn/v7/todo/tasks
+请求方法 POST
+签名方式 KSO-1
+权限要求 查询和管理待办任务（应用授权） kso.task.readwrite
+请求头（Header）
+Header 名称 参数类型 是否必填 说明
+Content-Type string 是 使用：application/json
+X-Kso-Date string 是 RFC1123 格式的日期，例: Wed, 23 Jan 2013 06:43:08 GMT
+X-Kso-Authorization string 是 KSO-1 签名值，详见《签名方法》
+Authorization string 是 授权凭证，格式为：Bearer {access_token}
+X-Kso-Id-Type string 否 ID 类型，可选值为 internal 或 external，不传默认为internal。当值为 external 时，开启三方 ID 模式，此时接口请求和响应中的 user_id 和 dept_id 应为三方ID，即 ex_user_id 和 ex_dept_id
+请求体（Body）
+名称 参数类型 是否必填 说明
+task_id string 否 待办id
+actions array[object] 否 操作行为
+∟ key string 否 回调 key
+∟ link object 否 跳转 url
+∟ ∟ mobile_url string 是 移动端跳转链接
+∟ ∟ pc_url string 是 pc 跳转链接
+∟ modal object 否 弹窗设置
+∟ ∟ desc string 是 弹窗提示文本
+∟ ∟ title string 是 弹窗标题
+∟ ∟ required boolean 否 必须填写原因
+∟ style string[enum] 否 按钮样式
+normal：普通样式；secondary：辅助样式；disable：禁用样式
+∟ text string 是 按钮文本
+category_id string 否 待办分类 id
+create_time integer 否 创建时间（单位：毫秒)
+creator string 否 创建者
+description string 否 待办描述
+display_time integer 否 展示时间（预留，单位：毫秒)
+due_time integer 否 截止时间（单位：毫秒)
+executor string 是 执行人 id
+ext_attrs array[object] 否 预留扩展字段
+∟ name string 是 属性名
+∟ value string 是 属性值
+finish_time integer 否 完成时间（单位：毫秒)
+is_read boolean 否 是否已读
+link object 否 待办任务跳转链接
+∟ mobile_url string 是 移动端跳转链接
+∟ pc_url string 是 pc 跳转链接
+notify_config object 否 提醒设置
+∟ reminders array[object] 否 推送人设置
+∟ ∟ before_due_time integer 否 提前推送时间（单位：分）
+∟ switch boolean 否 推送开关（默认开）
+priority integer 否 优先级 id
+status string[enum] 否 待办状态
+todo：未完成；finish：已完成
+tags array[string] 否 标签
+title object 是 待办标题
+∟ prefix string 是 前缀
+∟ subject string 是 主题
+请求地址示例
+[POST] https://openapi.wps.cn/v7/todo/tasks
+
+请求体示例
+{
+ "task_id": "string",
+ "actions": [
+ {
+ "key": "string",
+ "link": {
+ "mobile_url": "string",
+ "pc_url": "string"
+ },
+ "modal": {
+ "desc": "string",
+ "title": "string"
+ },
+ "style": "string[enum]",
+ "text": "string"
+ }
+ ],
+ "category_id": "string",
+ "create_time": 0,
+ "creator": "string",
+ "description": "string",
+ "display_time": 0,
+ "due_time": 0,
+ "executor": "string",
+ "ext_attrs": [
+ {
+ "name": "string",
+ "value": "string"
+ }
+ ],
+ "finish_time": 0,
+ "is_read": false,
+ "link": {
+ "mobile_url": "string",
+ "pc_url": "string"
+ },
+ "notify_config": {
+ "reminders": [
+ {
+ "before_due_time": 0
+ }
+ ],
+ "switch": false
+ },
+ "priority": 0,
+ "status": "string[enum]",
+ "tags": [
+ "string"
+ ],
+ "title": {
+ "prefix": "string",
+ "subject": "string"
+ }
+}
+
+响应体
+名称 参数类型 说明
+code integer 响应代码。非 0 表示失败，参照《状态码说明》
+msg string 响应信息
+data object 响应数据
+∟ task_id string 待办 id
+more object 更多的错误信息
+响应体示例
+{
+ "code": 0,
+ "data": {
+ "task_id": "string"
+ },
+ "msg": "string"
+}
