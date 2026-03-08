@@ -1,0 +1,30 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "pm": {
+      "description": "PM - WPS工具集项目管理和协调",
+      "mode": "primary",
+      "prompt": "{file:./agents/pm/AGENTS.md}\n\n{file:./agents/pm/CATCH_UP.md}",
+      "permission": {
+        "edit": "ask",
+        "bash": {
+          "git push": "ask",
+          "gitadd": "allow",
+          "git commit": "allow",
+          "git status": "allow",
+          "git log": "allow",
+          "git diff": "allow"
+        }
+      }
+    },
+    "knowledge-researcher": {
+      "description": "Knowledge Researcher - 知识调研与文档采集专家",
+      "mode": "primary",
+      "prompt": "{file:./agents/knowledge-researcher/AGENTS.md}\n\n{file:./agents/knowledge-researcher/CATCH_UP.md}",
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      }
+    }
+  }
+}

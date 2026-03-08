@@ -61,6 +61,19 @@ agents:
       priority: P0
       load_once: true
       description: "首次启动指南"
+  
+  knowledge-researcher:
+    identity:
+      path: "agents/knowledge-researcher/AGENTS.md"
+      priority: P0
+      estimated_tokens: 4000
+      description: "Knowledge Researcher 身份定义"
+    
+    state:
+      path: "agents/knowledge-researcher/CATCH_UP.md"
+      priority: P0
+      estimated_tokens: 2000
+      description: "Knowledge Researcher 当前状态"
 
 # Skills 索引
 skills:

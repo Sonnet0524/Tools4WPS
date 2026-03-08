@@ -1,0 +1,23 @@
+{
+  "name": "browser-agent",
+  "version": "1.0.0",
+  "description": "浏览器自动化Agent工具 - 用于访问动态网页和SPA应用",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "fetch": "node fetch-page.js",
+    "screenshot": "node screenshot.js",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "browser",
+    "automation",
+    "puppeteer",
+    "spa"
+  ],
+  "author": "PM Agent",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^24.38.0"
+  }
+}
