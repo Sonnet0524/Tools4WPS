@@ -23,10 +23,11 @@
 | 消息 | `src/tools/message.ts` | 19 tests | ✅ |
 | 待办 | `src/tools/todo.ts` | 23 tests | ✅ |
 | 用户组 | `src/tools/group.ts` | 22 tests | ✅ 已验证 |
+| 日历 | `src/tools/calendar.ts` | 28 tests | ⏳ 待权限 |
 | 多维表格 | `src/tools/dbsheet.ts` | 22 tests | ⏳ 待权限 |
-| **日历** | `src/tools/calendar.ts` | **28 tests** | ⏳ **待权限** |
+| **云文档** | `src/tools/drive.ts` | **28 tests** | ⏳ **待权限** |
 
-**总测试**: 150 pass, 28 skip ✅
+**总测试**: 178 pass, 34 skip ✅
 
 ### 知识库建设 ✅
 
@@ -107,16 +108,18 @@ WPS/
 │       ├── todo.ts
 │       ├── dbsheet.ts  # 多维表格
 │       ├── group.ts    # 用户组
-│       ├── calendar.ts # 🆕 日历
+│       ├── calendar.ts # 日历
+│       ├── drive.ts    # 🆕 云文档
 │       └── types.ts
-├── tests/              # 150 tests ✅
+├── tests/              # 178 tests ✅
 │   ├── auth.test.ts
 │   ├── contacts.test.ts
 │   ├── message.test.ts
 │   ├── todo.test.ts
 │   ├── dbsheet.test.ts
 │   ├── group.test.ts
-│   └── calendar.test.ts # 🆕
+│   ├── calendar.test.ts
+│   └── drive.test.ts    # 🆕
 ├── knowledge-base/     # 知识库 ✅
 │   └── wps-open-platform/
 │       ├── api-index.json
@@ -138,7 +141,7 @@ bun test tests/group.test.ts
 bun test tests/calendar.test.ts
 ```
 
-**最新结果**: 150 tests (122 pass, 28 skip)
+**最新结果**: 178 tests (144 pass, 34 skip)
 
 ---
 
@@ -189,8 +192,13 @@ bun test tests/calendar.test.ts
 | 用户组 | 5+ | 20 pass, 2 skip | ✅ 可用 |
 | 日历 | 7+ | 14 pass, 14 skip | ⏳ 待权限 |
 | 多维表格 | 4+ | 11 pass, 11 skip | ⏳ 待权限 |
+| **云文档** | **8+** | **22 pass, 6 skip** | ⏳ **待权限** |
 
 ---
 
-**Last Updated**: 2026-03-17 (日历工具开发完成)
-**Next Work**: 开发云文档工具 (DriveTool)
+**Last Updated**: 2026-03-17 (云文档工具开发完成，由 dev-team Agent 完成)
+**Next Work**: 
+- 申请企业开通: 日历、云文档、多维表格权限
+- 开发会议工具 (MeetingTool)
+- 开发审批工具 (WorkflowTool)
+- Skills层开发
