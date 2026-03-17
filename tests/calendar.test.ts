@@ -50,7 +50,7 @@ describe("CalendarTool", () => {
   });
 
   describe("getPrimaryCalendar", () => {
-    test.skip("should get primary calendar", async () => {
+    test("should get primary calendar", async () => {
       const calendar = await calendarTool.getPrimaryCalendar();
 
       expect(calendar).toBeDefined();

@@ -11,11 +11,15 @@ describe("TodoTool", () => {
   let todoTool: TodoTool;
   let contactsTool: ContactsTool;
   let testExecutorId: string;
+  
+  // 用于收集所有创建的taskId，在afterEach中统一清理
+  let tasksToCleanup: string[] = [];
 
   beforeEach(async () => {
     TokenManager.resetInstance();
     todoTool = new TodoTool({ appId, appKey, baseUrl });
     contactsTool = new ContactsTool({ appId, appKey, baseUrl });
+    tasksToCleanup = []; // 重置清理列表
     
     const users = await contactsTool.getUsers({ pageSize: 1 });
     if (users.items.length > 0) {
@@ -23,7 +27,17 @@ describe("TodoTool", () => {
     }
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    // 统一清理所有创建的待办
+    if (tasksToCleanup.length > 0) {
+      console.log(`\n🧹 清理 ${tasksToCleanup.length} 个测试待办...`);
+      try {
+        await todoTool.batchDeleteTasks(tasksToCleanup);
+        console.log(`✅ 已清理 ${tasksToCleanup.length} 个待办`);
+      } catch (error) {
+        console.error(`❌ 清理失败:`, error instanceof Error ? error.message : error);
+      }
+    }
     TokenManager.resetInstance();
   });
 
@@ -34,19 +48,30 @@ describe("TodoTool", () => {
         return;
       }
 
-      const result = await todoTool.createTask({
-        executor: testExecutorId,
-        title: {
-          prefix: "[测试]",
-          subject: "测试待办任务",
-        },
-      });
+      let taskId: string | undefined;
+      
+      try {
+        const result = await todoTool.createTask({
+          executor: testExecutorId,
+          title: {
+            prefix: "[测试]",
+            subject: "测试待办任务",
+          },
+        });
 
-      expect(result).toBeDefined();
-      expect(result.taskId).toBeDefined();
-      expect(typeof result.taskId).toBe('string');
-
-      await todoTool.batchDeleteTasks([result.taskId]);
+        expect(result).toBeDefined();
+        expect(result.taskId).toBeDefined();
+        expect(typeof result.taskId).toBe('string');
+        
+        taskId = result.taskId;
+        tasksToCleanup.push(taskId); // 添加到清理列表
+      } catch (error) {
+        // 如果创建失败但有taskId，也要清理
+        if (taskId) {
+          tasksToCleanup.push(taskId);
+        }
+        throw error;
+      }
     });
 
     test("should create a todo task with all fields", async () => {
@@ -55,27 +80,37 @@ describe("TodoTool", () => {
         return;
       }
 
-      const dueTime = Date.now() + 24 * 60 * 60 * 1000;
-      const result = await todoTool.createTask({
-        executor: testExecutorId,
-        title: {
-          prefix: "[测试]",
-          subject: "完整待办任务",
-        },
-        description: "这是一个完整的待办任务描述",
-        dueTime: dueTime,
-        priority: 1,
-        link: {
-          pcUrl: "https://www.wps.cn",
-          mobileUrl: "https://www.wps.cn",
-        },
-        reminders: [60, 30],
-      });
+      let taskId: string | undefined;
+      
+      try {
+        const dueTime = Date.now() + 24 * 60 * 60 * 1000;
+        const result = await todoTool.createTask({
+          executor: testExecutorId,
+          title: {
+            prefix: "[测试]",
+            subject: "完整待办任务",
+          },
+          description: "这是一个完整的待办任务描述",
+          dueTime: dueTime,
+          priority: 1,
+          link: {
+            pcUrl: "https://www.wps.cn",
+            mobileUrl: "https://www.wps.cn",
+          },
+          reminders: [60, 30],
+        });
 
-      expect(result).toBeDefined();
-      expect(result.taskId).toBeDefined();
-
-      await todoTool.batchDeleteTasks([result.taskId]);
+        expect(result).toBeDefined();
+        expect(result.taskId).toBeDefined();
+        
+        taskId = result.taskId;
+        tasksToCleanup.push(taskId);
+      } catch (error) {
+        if (taskId) {
+          tasksToCleanup.push(taskId);
+        }
+        throw error;
+      }
     });
 
     test("should throw error for missing executor", async () => {
@@ -124,20 +159,19 @@ describe("TodoTool", () => {
         return;
       }
 
-      const result = await todoTool.createTask({
-        executor: testExecutorId,
-        title: {
-          prefix: "[测试]",
-          subject: "查询测试待办",
-        },
-        description: "用于查询测试",
-      });
-      createdTaskId = result.taskId;
-    });
-
-    afterEach(async () => {
-      if (createdTaskId) {
-        await todoTool.batchDeleteTasks([createdTaskId]).catch(() => {});
+      try {
+        const result = await todoTool.createTask({
+          executor: testExecutorId,
+          title: {
+            prefix: "[测试]",
+            subject: "查询测试待办",
+          },
+          description: "用于查询测试",
+        });
+        createdTaskId = result.taskId;
+        tasksToCleanup.push(createdTaskId);
+      } catch (error) {
+        console.error("Failed to create test task:", error);
       }
     });
 
@@ -180,19 +214,18 @@ describe("TodoTool", () => {
         return;
       }
 
-      const result = await todoTool.createTask({
-        executor: testExecutorId,
-        title: {
-          prefix: "[测试]",
-          subject: "更新测试待办",
-        },
-      });
-      createdTaskId = result.taskId;
-    });
-
-    afterEach(async () => {
-      if (createdTaskId) {
-        await todoTool.batchDeleteTasks([createdTaskId]).catch(() => {});
+      try {
+        const result = await todoTool.createTask({
+          executor: testExecutorId,
+          title: {
+            prefix: "[测试]",
+            subject: "更新测试待办",
+          },
+        });
+        createdTaskId = result.taskId;
+        tasksToCleanup.push(createdTaskId);
+      } catch (error) {
+        console.error("Failed to create test task:", error);
       }
     });
 
@@ -283,48 +316,49 @@ describe("TodoTool", () => {
   });
 
   describe("batchCreateTasks", () => {
-    let createdTaskIds: string[] = [];
-
-    afterEach(async () => {
-      if (createdTaskIds.length > 0) {
-        await todoTool.batchDeleteTasks(createdTaskIds).catch(() => {});
-        createdTaskIds = [];
-      }
-    });
-
     test("should batch create multiple tasks", async () => {
       if (!testExecutorId) {
         console.log("No users found, skipping test");
         return;
       }
 
-      const tasks: CreateTaskParams[] = [
-        {
-          executor: testExecutorId,
-          title: { prefix: "[批量]", subject: "任务1" },
-        },
-        {
-          executor: testExecutorId,
-          title: { prefix: "[批量]", subject: "任务2" },
-        },
-        {
-          executor: testExecutorId,
-          title: { prefix: "[批量]", subject: "任务3" },
-        },
-      ];
+      let createdIds: string[] = [];
+      
+      try {
+        const tasks: CreateTaskParams[] = [
+          {
+            executor: testExecutorId,
+            title: { prefix: "[批量]", subject: "任务1" },
+          },
+          {
+            executor: testExecutorId,
+            title: { prefix: "[批量]", subject: "任务2" },
+          },
+          {
+            executor: testExecutorId,
+            title: { prefix: "[批量]", subject: "任务3" },
+          },
+        ];
 
-      const results = await todoTool.batchCreateTasks(tasks);
+        const results = await todoTool.batchCreateTasks(tasks);
 
-      expect(results).toBeDefined();
-      expect(Array.isArray(results)).toBe(true);
-      expect(results.length).toBe(3);
+        expect(results).toBeDefined();
+        expect(Array.isArray(results)).toBe(true);
+        expect(results.length).toBe(3);
 
-      results.forEach(result => {
-        expect(result.taskId).toBeDefined();
-        expect(typeof result.taskId).toBe('string');
-      });
+        results.forEach(result => {
+          expect(result.taskId).toBeDefined();
+          expect(typeof result.taskId).toBe('string');
+        });
 
-      createdTaskIds = results.map(r => r.taskId);
+        createdIds = results.map(r => r.taskId);
+        tasksToCleanup.push(...createdIds);
+      } catch (error) {
+        if (createdIds.length > 0) {
+          tasksToCleanup.push(...createdIds);
+        }
+        throw error;
+      }
     });
 
     test("should batch create tasks with full fields", async () => {
@@ -333,28 +367,38 @@ describe("TodoTool", () => {
         return;
       }
 
-      const dueTime = Date.now() + 24 * 60 * 60 * 1000;
-      const tasks: CreateTaskParams[] = [
-        {
-          executor: testExecutorId,
-          title: { prefix: "[批量完整]", subject: "完整任务" },
-          description: "批量创建完整任务描述",
-          dueTime: dueTime,
-          priority: 1,
-        },
-      ];
+      let createdIds: string[] = [];
+      
+      try {
+        const dueTime = Date.now() + 24 * 60 * 60 * 1000;
+        const tasks: CreateTaskParams[] = [
+          {
+            executor: testExecutorId,
+            title: { prefix: "[批量完整]", subject: "完整任务" },
+            description: "批量创建完整任务描述",
+            dueTime: dueTime,
+            priority: 1,
+          },
+        ];
 
-      const results = await todoTool.batchCreateTasks(tasks);
+        const results = await todoTool.batchCreateTasks(tasks);
 
-      expect(results).toBeDefined();
-      expect(results.length).toBe(1);
+        expect(results).toBeDefined();
+        expect(results.length).toBe(1);
 
-      const task = await todoTool.getTask(results[0].taskId);
-      expect(task.description).toBe("批量创建完整任务描述");
-      expect(task.dueTime).toBe(dueTime);
-      expect(task.priority).toBe(1);
+        const task = await todoTool.getTask(results[0].taskId);
+        expect(task.description).toBe("批量创建完整任务描述");
+        expect(task.dueTime).toBe(dueTime);
+        expect(task.priority).toBe(1);
 
-      createdTaskIds = results.map(r => r.taskId);
+        createdIds = results.map(r => r.taskId);
+        tasksToCleanup.push(...createdIds);
+      } catch (error) {
+        if (createdIds.length > 0) {
+          tasksToCleanup.push(...createdIds);
+        }
+        throw error;
+      }
     });
 
     test("should throw error for empty tasks array", async () => {
@@ -376,10 +420,9 @@ describe("TodoTool", () => {
   });
 
   describe("batchDeleteTasks", () => {
-    let createdTaskIds: string[] = [];
-
-    beforeEach(async () => {
+    test("should batch delete tasks", async () => {
       if (!testExecutorId) {
+        console.log("No users found, skipping test");
         return;
       }
 
@@ -393,18 +436,12 @@ describe("TodoTool", () => {
           title: { prefix: "[删除]", subject: "待删除任务2" },
         },
       ]);
-      createdTaskIds = results.map(r => r.taskId);
-    });
-
-    test("should batch delete tasks", async () => {
-      if (createdTaskIds.length === 0) {
-        console.log("No tasks created, skipping test");
-        return;
-      }
-
-      await todoTool.batchDeleteTasks(createdTaskIds);
+      
+      const taskIds = results.map(r => r.taskId);
+      
+      // 立即删除，不加入清理列表（因为这就是测试的内容）
+      await todoTool.batchDeleteTasks(taskIds);
       expect(true).toBe(true);
-      createdTaskIds = [];
     });
 
     test("should throw error for empty task ids array", async () => {
@@ -456,19 +493,18 @@ describe("TodoTool", () => {
         return;
       }
 
-      const result = await todoTool.createTask({
-        executor: testExecutorId,
-        title: { prefix: "[类型]", subject: "类型测试" },
-        description: "类型测试描述",
-        dueTime: Date.now() + 86400000,
-        priority: 1,
-      });
-      createdTaskId = result.taskId;
-    });
-
-    afterEach(async () => {
-      if (createdTaskId) {
-        await todoTool.batchDeleteTasks([createdTaskId]).catch(() => {});
+      try {
+        const result = await todoTool.createTask({
+          executor: testExecutorId,
+          title: { prefix: "[类型]", subject: "类型测试" },
+          description: "类型测试描述",
+          dueTime: Date.now() + 86400000,
+          priority: 1,
+        });
+        createdTaskId = result.taskId;
+        tasksToCleanup.push(createdTaskId);
+      } catch (error) {
+        console.error("Failed to create test task:", error);
       }
     });
 
