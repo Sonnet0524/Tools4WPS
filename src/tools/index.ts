@@ -7,14 +7,31 @@ export type { MessageToolConfig } from "./message";
 export { TodoTool } from "./todo";
 export type { TodoToolConfig } from "./todo";
 
+export { DBSheetTool } from "./dbsheet";
+export type { DBSheetToolConfig } from "./dbsheet";
+
+export { GroupTool } from "./group";
+export type { GroupToolConfig } from "./group";
+
+export { CalendarTool } from "./calendar";
+export type { CalendarToolConfig } from "./calendar";
+
+// export { DocumentTool } from "./document";  // TODO: Implement in TASK-005
+// export type { DocumentToolConfig } from "./document";
+
 export type {
   User,
   Group,
+  GroupMember,
   Department,
   UserListResult,
   GroupListResult,
+  GroupMemberListResult,
   GetUsersParams,
   GetGroupsParams,
+  GetGroupMembersParams,
+  CreateGroupParams,
+  AddGroupMemberParams,
   Chat,
   ChatListResult,
   GetChatsParams,
@@ -29,4 +46,38 @@ export type {
   TodoResult,
   CreateTaskParams,
   UpdateTaskParams,
+  DBSheetSchema,
+  DBSheet,
+  DBSheetField,
+  DBSheetView,
+  DBSheetRecord,
+  DBSheetRecordResult,
+  ListRecordsParams,
+  CreateRecordParams,
+  CreateSheetParams,
+  DocumentType,
+  CreateDocumentParams,
+  CreateDocumentResult,
+  DocumentInfo,
+  ShareLinkParams,
+  ShareLinkResult,
+  SaveDocumentParams,
+  FolderInfo,
+  CreateFolderParams,
+  ListFilesParams,
+  ListFilesResult,
+  Calendar,
+  CalendarEvent,
+  CalendarEventTime,
+  CalendarEventRecurrence,
+  CalendarEventReminder,
+  CalendarEventLocation,
+  CalendarEventOrganizer,
+  CalendarEventOnlineMeeting,
+  CalendarListResult,
+  CalendarEventListResult,
+  GetCalendarsParams,
+  GetEventsParams,
+  CreateEventParams,
+  UpdateEventParams,
 } from "./types";
