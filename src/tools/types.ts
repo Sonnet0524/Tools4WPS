@@ -540,3 +540,235 @@ export interface UpdateEventParams {
   isReinvition?: boolean;
   modType?: 'one' | 'following' | 'all';
 }
+
+// ============ 云文档 (Drive) 类型 ============
+
+export interface DriveQuota {
+  deleted: number;
+  remaining: number;
+  total: number;
+  used: number;
+}
+
+export interface DriveCreator {
+  avatar?: string;
+  company_id?: string;
+  id: string;
+  name?: string;
+  type: 'user' | 'sp' | 'unknown';
+}
+
+export interface DriveExtAttr {
+  name: string;
+  value: string;
+}
+
+export interface Drive {
+  id: string;
+  name: string;
+  allotee_id: string;
+  allotee_type: 'user' | 'group' | 'app';
+  company_id: string;
+  created_by: DriveCreator;
+  ctime: number;
+  mtime: number;
+  description?: string;
+  ext_attrs?: DriveExtAttr[];
+  quota: DriveQuota;
+  source: string;
+  status: 'inuse' | 'deleted';
+}
+
+export interface DriveListResult {
+  items: Drive[];
+  next_page_token?: string;
+}
+
+export interface DriveFilePermission {
+  comment: boolean;
+  copy: boolean;
+  copy_content: boolean;
+  delete: boolean;
+  download: boolean;
+  history: boolean;
+  list: boolean;
+  move: boolean;
+  new_empty: boolean;
+  perm_ctl: boolean;
+  preview: boolean;
+  print: boolean;
+  rename: boolean;
+  saveas: boolean;
+  secret: boolean;
+  share: boolean;
+  update: boolean;
+  upload: boolean;
+}
+
+export interface DriveFileModifier {
+  avatar?: string;
+  company_id?: string;
+  id: string;
+  name?: string;
+  type: 'user' | 'sp' | 'unknown';
+}
+
+export interface DriveFile {
+  id: string;
+  name: string;
+  type: 'folder' | 'file' | 'shortcut';
+  drive_id: string;
+  parent_id: string;
+  created_by: DriveCreator;
+  modified_by: DriveFileModifier;
+  ctime: number;
+  mtime: number;
+  size: number;
+  version: number;
+  shared: boolean;
+  link_id?: string;
+  link_url?: string;
+  ext_attrs?: DriveExtAttr[];
+  permission?: DriveFilePermission;
+  drive?: Drive;
+}
+
+export interface DriveFileListResult {
+  items: DriveFile[];
+  next_page_token?: string;
+}
+
+export interface DriveFileSrc {
+  name: string;
+  path: string;
+  type: string;
+}
+
+export interface DriveSearchResultItem {
+  file: DriveFile;
+  file_src?: DriveFileSrc;
+  highlights?: Record<string, string[]>;
+  otime?: number;
+}
+
+export interface DriveSearchResult {
+  items: DriveSearchResultItem[];
+  next_page_token?: string;
+  total?: number;
+}
+
+export interface DriveDownloadInfo {
+  url: string;
+  hashes?: Array<{
+    sum: string;
+    type: 'sha256' | 'md5' | 'sha1' | 's2s';
+  }>;
+}
+
+export interface DriveShareLinkOpts {
+  allow_perm_apply?: boolean;
+  check_code?: string;
+  close_after_expire?: boolean;
+  expire_period?: 0 | 7 | 30;
+  expire_time?: number;
+}
+
+export interface DriveShareLink {
+  id: string;
+  drive_id: string;
+  file_id: string;
+  url: string;
+  role_id: string;
+  scope: 'anyone' | 'company' | 'users';
+  status: 'open' | 'closed';
+  opts: DriveShareLinkOpts;
+  created_by?: DriveCreator;
+  ctime: number;
+  mtime: number;
+}
+
+export interface GetDrivesParams {
+  alloteeType: 'user' | 'group' | 'app';
+  alloteeId?: string;
+  sources?: string[];
+  pageSize: number;
+  pageToken?: string;
+  withExtAttrs?: boolean;
+}
+
+export interface ListFilesParams {
+  driveId: string;
+  parentId: string;
+  pageSize: number;
+  pageToken?: string;
+  withPermission?: boolean;
+  withExtAttrs?: boolean;
+  filterExts?: string;
+  filterType?: string;
+  order?: 'asc' | 'desc';
+  orderBy?: 'ctime' | 'mtime' | 'dtime' | 'fname' | 'fsize';
+}
+
+export interface SearchFilesParams {
+  type: 'file_name' | 'content' | 'all';
+  keyword?: string;
+  pageSize: number;
+  pageToken?: string;
+  fileType?: 'folder' | 'file' | 'shortcut';
+  fileExts?: string[];
+  driveIds?: string[];
+  parentIds?: string[];
+  creatorIds?: string[];
+  modifierIds?: string[];
+  sharerIds?: string[];
+  receiverIds?: string[];
+  timeType?: 'ctime' | 'mtime' | 'otime' | 'stime';
+  startTime?: number;
+  endTime?: number;
+  withPermission?: boolean;
+  withLink?: boolean;
+  withTotal?: boolean;
+  withDrive?: boolean;
+  order?: 'asc' | 'desc';
+  orderBy?: 'ctime' | 'mtime';
+  scope?: string[];
+  searchOperatorName?: boolean;
+}
+
+export interface CreateFolderParams {
+  driveId: string;
+  parentId: string;
+  name: string;
+  onNameConflict?: 'fail' | 'rename' | 'overwrite' | 'replace';
+}
+
+export interface CreateFileParams {
+  driveId: string;
+  parentId: string;
+  name: string;
+  fileType: 'folder' | 'file' | 'shortcut';
+  fileId?: string;
+  onNameConflict?: 'fail' | 'rename' | 'overwrite' | 'replace';
+  parentPath?: string[];
+}
+
+export interface DeleteFileParams {
+  driveId: string;
+  fileId: string;
+}
+
+export interface GetDownloadInfoParams {
+  driveId: string;
+  fileId: string;
+  withHash?: boolean;
+  internal?: boolean;
+  storageBaseDomain?: string;
+}
+
+export interface ShareFileParams {
+  driveId: string;
+  fileId: string;
+  roleId: string;
+  scope: 'anyone' | 'company' | 'users';
+  opts?: DriveShareLinkOpts;
+}

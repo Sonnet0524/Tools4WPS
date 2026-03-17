@@ -16,6 +16,9 @@ export type { GroupToolConfig } from "./group";
 export { CalendarTool } from "./calendar";
 export type { CalendarToolConfig } from "./calendar";
 
+export { DriveTool } from "./drive";
+export type { DriveToolConfig } from "./drive";
+
 // export { DocumentTool } from "./document";  // TODO: Implement in TASK-005
 // export type { DocumentToolConfig } from "./document";
 
@@ -80,4 +83,19 @@ export type {
   GetEventsParams,
   CreateEventParams,
   UpdateEventParams,
+  Drive,
+  DriveFile,
+  DriveListResult,
+  DriveFileListResult,
+  DriveSearchResult,
+  DriveDownloadInfo,
+  DriveShareLink,
+  GetDrivesParams,
+  ListFilesParams,
+  SearchFilesParams,
+  CreateFolderParams,
+  CreateFileParams,
+  DeleteFileParams,
+  GetDownloadInfoParams,
+  ShareFileParams,
 } from "./types";
