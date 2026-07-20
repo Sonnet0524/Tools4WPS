@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "description": "WPS 云文档 Tools 和 Skills",
   "type": "module",
+  "author": "Sonnet.G",
+  "license": "AGPL-3.0",
   "scripts": {
     "dev": "bun run src/index.ts",
     "test": "bun test",

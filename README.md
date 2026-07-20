@@ -373,7 +373,7 @@ Day 4: 验收和继续
 
 ## 📄 许可证
 
-MIT License - 自由使用和修改
+AGPL v3 License - 详见 LICENSE 文件
 
 ---
 
@@ -386,7 +386,7 @@ MIT License - 自由使用和修改
 
 ---
 
-**维护者**: PM Agent Framework  
+**维护者**: Sonnet.G  
 **创建日期**: 2026-03-08  
 **版本**: 1.0.0
 
